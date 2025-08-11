@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>edu12 - Class 12 Study Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Reset and box-sizing */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      text-align: center;
+      padding: 85px 15px 180px; /* adjusted top padding for nav height */
+      background-color: #f8fafc;
+      position: relative;
+      min-height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      color: #1e40af;
+      font-size: 48px;
+      margin-bottom: 10px;
+      font-weight: 700;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    p {
+      font-size: 20px;
+      margin-bottom: 40px;
+      color: #4b5563;
+    }
+    .subjects {
+      margin-top: 20px;
+    }
+    .subject-btn {
+      background-color: #1e40af;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      margin: 10px;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .subject-btn:hover {
+      background-color: #1e3a8a;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+    }
+
+    /* Video section styling */
+    .video-section {
+      margin: 50px auto;
+      max-width: 1000px;
+      padding: 0 20px;
+    }
+    
+    .video-container {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-top: 30px;
+    }
+    
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+    
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    
+    .video-title {
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: #1e3a8a;
+    }
+
+    /* Improved Navigation bar styling */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+      display: flex;
+      justify-content: center;
+      padding: 15px 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      z-index: 1000;
+      overflow-x: auto;
+    }
+    
+    .nav-container {
+      display: flex;
+      width: 100%;
+      max-width: 1200px;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .nav-logo {
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+    
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+      padding: 8px 12px;
+      border-radius: 6px;
+    }
+    
+    nav a:hover {
+      background-color: rgba(255,255,255,0.15);
+      transform: translateY(-2px);
+    }
+    
+    nav a.active {
+      background-color: rgba(255,255,255,0.2);
+    }
+    
+    nav a .icon {
+      font-size: 20px;
+    }
+
+    /* Footer styling */
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+      color: white;
+      padding: 25px 20px;
+      font-size: 18px;
+      text-align: center;
+      box-shadow: 0 -4px 6px rgba(0,0,0,0.1);
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .nav-links {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      .video-section {
+        margin: 30px auto;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 36px;
+      }
+      p {
+        font-size: 16px;
+      }
+      .subject-btn {
+        font-size: 16px;
+        padding: 12px 20px;
+        margin: 8px;
+      }
+      nav a {
+        font-size: 16px;
+        padding: 6px 10px;
+      }
+      footer {
+        font-size: 16px;
+        padding: 20px 15px;
+      }
+      .video-title {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <span class="icon">📚</span>
+      <span>edu12</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" title="Home" class="active">
+        <span class="icon">🏠</span>
+        <span>Home</span>
+      </a>
+      <a href="support.html" title="Support">
+        <span class="icon">🛠️</span>
+        <span>Support</span>
+      </a>
+      <a href="model_questions.html" title="Model Question">
+        <span class="icon">📝</span>
+        <span>Model Questions</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+  <h1>edu12</h1>
+  <p>Select your subject to start learning:</p>
+
+  <div class="subjects">
+    <a href="English.html" class="subject-btn">English</a>
+    <a href="nepali.html" class="subject-btn">Nepali</a>
+    <a href="economics.html" class="subject-btn">Economics</a>
+    <a href="account.html" class="subject-btn">Account</a>
+    <a href="business_study.html" class="subject-btn">Business Study</a>
+    <a href="social.html" class="subject-btn">Social</a>
+  </div>
+
+  <!-- Video Section -->
+  <div class="video-section">
+    <h2 class="video-title">Featured Educational Video</h2>
+    <div class="video-container">
+      <div class="video-wrapper">
+        <iframe src="https://www.youtube.com/embed/pA5BVON9mWU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 edu12. All rights reserved.<br>
+    Designed with ❤️ by edu12
+  </footer>
+
+</body>
+</html>
