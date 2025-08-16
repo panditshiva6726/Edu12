@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mere Edu12 - Sign Up</title>
+    <style>
+        :root {
+            --primary: #4a6bff;
+            --secondary: #f8f9fa;
+            --accent: #ff6b6b;
+            --text: #333;
+            --light: #fff;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary);
+            color: var(--text);
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .left-section {
+            flex: 1;
+            background-color: var(--primary);
+            color: var(--light);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .left-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .left-section p {
+            font-size: 1.1rem;
+            max-width: 80%;
+            line-height: 1.6;
+        }
+        
+        .right-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        .logo {
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .form-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .btn {
+            background-color: var(--primary);
+            color: var(--light);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #3a5bef;
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        
+        .login-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .message {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            border-radius: 4px;
+            text-align: center;
+            display: none;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .left-section {
+                padding: 2rem 1rem;
+            }
+            
+            .right-section {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-section">
+            <h1>wellcome class 12 books guid 
+            Edu12 app Ltd</h1>
+            <p>Create your account to access personalized learning resources, track your progress, and connect with educators.</p>
+        </div>
+        <div class="right-section">
+            <div class="logo">Mere Edu12</div>
+            <div class="form-container">
+                <h2 class="form-title">Sign Up</h2>
+                <div id="message" class="message"></div>
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Create a password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+                    </div>
+                    <button type="submit" class="btn">Create Account</button>
+                </form>
+                <div class="login-link">
+                    Already have an account? <a href="login.html">Log in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            const messageEl = document.getElementById('message');
+            messageEl.style.display = 'none';
+            
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                messageEl.textContent = 'Passwords do not match!';
+                messageEl.className = 'message error';
+                messageEl.style.display = 'block';
+                return;
+            }
+            
+            try {
+                // Check if user already exists
+                const checkResponse = await fetch('https://api.jsonbin.io/v3/b/689c3c1eae596e708fc8ef99/latest', {
+                    headers: {
+                        'X-Master-Key': '$2a$10$cAXel/UUKn3vZQoDInjeROeJSQ.mPt0TGSMegBOfZMqkvuXtfkZLG'
+                    }
+                });
+                
+                const checkData = await checkResponse.json();
+                const users = checkData.record.users || [];
+                
+                const userExists = users.some(user => user.email === email);
+                if (userExists) {
+                    messageEl.textContent = 'User with this email already exists!';
+                    messageEl.className = 'message error';
+                    messageEl.style.display = 'block';
+                    return;
+                }
+                
+                // Add new user
+                const newUser = {
+                    name,
+                    email,
+                    password // Note: In a real app, you should hash the password before storing
+                };
+                
+                users.push(newUser);
+                
+                const updateResponse = await fetch('https://api.jsonbin.io/v3/b/689c3c1eae596e708fc8ef99', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': '$2a$10$cAXel/UUKn3vZQoDInjeROeJSQ.mPt0TGSMegBOfZMqkvuXtfkZLG'
+                    },
+                    body: JSON.stringify({ users })
+                });
+                
+                if (updateResponse.ok) {
+                    messageEl.textContent = 'Account created successfully! Redirecting to login...';
+                    messageEl.className = 'message success';
+                    messageEl.style.display = 'block';
+                    
+                    // Store user email in sessionStorage for login page
+                    sessionStorage.setItem('registeredEmail', email);
+                    
+                    // Redirect to login after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                } else {
+                    throw new Error('Failed to create account');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                messageEl.textContent = 'An error occurred. Please try again.';
+                messageEl.className = 'message error';
+                messageEl.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
