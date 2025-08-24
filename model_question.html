@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Display</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #2575fc;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #6a11cb;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        
+        .upload-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            margin: 15px 0;
+            width: 100%;
+        }
+        
+        .upload-btn {
+            border: 2px dashed #2575fc;
+            color: #2575fc;
+            background-color: #f0f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .upload-btn-wrapper input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .image-gallery {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gallery-title {
+            color: #2575fc;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f3f9;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .image-item {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .image-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .image-thumbnail {
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f9f9f9;
+            overflow: hidden;
+        }
+        
+        .image-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .image-details {
+            padding: 10px;
+            text-align: center;
+            background: #f8f9ff;
+        }
+        
+        .image-name {
+            font-weight: bold;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .no-images {
+            text-align: center;
+            color: #888;
+            padding: 40px 20px;
+            grid-column: 1 / -1;
+        }
+        
+        .no-images i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ccc;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: auto;
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: #2575fc;
+            color: white;
+        }
+        
+        .modal-body {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .modal-body img {
+            max-width: 100%;
+            max-height: 70vh;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #6a11cb;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            transition: background 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: #580fb5;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .image-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Image Display Page</h1>
+            <p class="subtitle">Upload and view images from your mobile device</p>
+            <a href="nepali.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Main Page
+            </a>
+        </header>
+        
+        <div class="upload-section">
+            <h2 class="gallery-title">
+                <i class="fas fa-upload"></i> Upload Images
+            </h2>
+            
+            <div class="upload-btn-wrapper">
+                <div class="upload-btn">
+                    <i class="fas fa-cloud-upload-alt"></i> Select Images
+                </div>
+                <input type="file" id="imageInput" accept=".jpg,.jpeg,.png" multiple>
+            </div>
+            
+            <p style="text-align: center; margin-top: 10px; color: #666;">
+                Supported formats: JPG, PNG
+            </p>
+        </div>
+        
+        <div class="image-gallery">
+            <h2 class="gallery-title">
+                <i class="fas fa-images"></i> Image Gallery
+            </h2>
+            
+            <div id="noImages" class="no-images">
+                <i class="fas fa-image"></i>
+                <p>No images uploaded yet</p>
+                <p>Upload images using the upload section above</p>
+            </div>
+            
+            <div id="imageGrid" class="image-grid">
+                <!-- Images will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Image Preview</h3>
+                <button class="close-modal" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Image preview will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Store uploaded images
+        let uploadedImages = [];
+        
+        // DOM elements
+        const imageInput = document.getElementById('imageInput');
+        const imageGrid = document.getElementById('imageGrid');
+        const noImages = document.getElementById('noImages');
+        const imageModal = document.getElementById('imageModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        
+        // Handle image selection
+        imageInput.addEventListener('change', function(event) {
+            const files = event.target.files;
+            
+            if (files.length > 0) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    if (file.type.includes('image')) {
+                        uploadedImages.push(file);
+                        addImageToGrid(file);
+                    }
+                }
+                
+                // Update UI
+                if (uploadedImages.length > 0) {
+                    noImages.style.display = 'none';
+                }
+                
+                // Clear the input to allow selecting the same file again
+                imageInput.value = '';
+            }
+        });
+        
+        // Add image to the grid
+        function addImageToGrid(file) {
+            const imageItem = document.createElement('div');
+            imageItem.className = 'image-item';
+            
+            imageItem.innerHTML = `
+                <div class="image-thumbnail">
+                    <img src="${URL.createObjectURL(file)}" alt="${file.name}">
+                </div>
+                <div class="image-details">
+                    <div class="image-name">${file.name}</div>
+                </div>
+            `;
+            
+            // Add click event to view the image
+            imageItem.addEventListener('click', function() {
+                openModal(file);
+            });
+            
+            imageGrid.appendChild(imageItem);
+        }
+        
+        // Open modal with image preview
+        function openModal(file) {
+            modalTitle.textContent = file.name;
+            modalBody.innerHTML = '';
+            
+            // Display image
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.alt = file.name;
+            modalBody.appendChild(img);
+            
+            // Show the modal
+            imageModal.style.display = 'flex';
+        }
+        
+        // Close the modal
+        function closeModal() {
+            imageModal.style.display = 'none';
+            
+            // Release object URLs to free memory
+            const images = modalBody.querySelectorAll('img');
+            images.forEach(img => URL.revokeObjectURL(img.src));
+        }
+        
+        // Close modal when clicking outside content
+        imageModal.addEventListener('click', function(event) {
+            if (event.target === imageModal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
