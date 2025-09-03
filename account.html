@@ -53,6 +53,16 @@
   <img src="Screenshot_2025-08-21-08-09-41-38.jpg" alt="Photo 25">
   <img src="Screenshot_2025-08-21-08-09-46-03.jpg" alt="Photo 26">
   <img src="Screenshot_2025-08-21-08-09-48-81.jpg" alt="Photo 27">
+  <script>
+  // 👉 अपना सही code यहाँ डालो
+  const correctCode = "1234";  
+
+  let userCode = prompt("🔒 Enter 4 digit access code:");
+
+  if (userCode !== correctCode) {
+    document.body.innerHTML = "<h2 style='color:red; text-align:center;'>❌ Wrong Code! Access Denied.</h2>";
+  }
+  </script>
 
 </body>
   </html>
