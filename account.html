@@ -1,10 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Account Page</title>
-  
+  <style>
+    :root{--bg:#f4f4f4;--card:#fff}
+    html,body{height:100%;margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg)}
+    .wrap{max-width:900px;margin:20px auto;padding:16px}
+    #lock-screen{display:flex;flex-direction:column;gap:8px;align-items:center;justify-content:center;background:var(--card);padding:20px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+    #code{padding:8px;font-size:16px;border:1px solid #ccc;border-radius:4px}
+    #submit{padding:8px 12px;font-size:16px;border:none;background:#2b7cff;color:#fff;border-radius:4px;cursor:pointer}
+    #msg{color:#b00;margin-top:6px}
+    main#content{display:none;margin-top:16px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;align-items:start;display:grid}
+    figure{margin:0;background:var(--card);padding:8px;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,.06);display:flex;flex-direction:column;align-items:center}
+    img.gallery{max-width:100%;height:auto;border-radius:6px;user-select:none;-webkit-user-drag:none}
+    .protect-blur{filter:blur(18px) brightness(.8);transition:filter .18s ease}
+    *{ -webkit-user-select: none; user-select: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div id="lock-screen" aria-live="polite">
+      <h2>Protected Gallery</h2>
+      <div>Enter access code to view images</div>
+      <input id="code" type="password" placeholder="Enter access code" aria-label="access code" />
+      <div style="display:flex;gap:8px">
+        <button id="submit">Unlock</button>
+        <button id="use-demo" type="button">Demo</button>
+      </div>
+      <div id="msg" role="status"></div>
+    </div>
+
   <main id="content" aria-hidden="true">
   <figure><img class="gallery" src="Screenshot_2025-08-21-08-08-13-84.jpg" alt="Photo 1"></figure>
   <figure><img class="gallery" src="Screenshot_2025-08-21-08-08-16-67.jpg" alt="Photo 2"></figure>
@@ -43,6 +70,90 @@
   if (userCode !== correctCode) {
     document.body.innerHTML = "<h2 style='color:red; text-align:center;'>❌ Wrong Code! Access Denied.</h2>";
   }
+  </script>
+<script>
+    const correctCode = "nepaliboy"; // बदलना हो तो यहाँ बदलें
+
+    const lock = document.getElementById('lock-screen');
+    const content = document.getElementById('content');
+    const input = document.getElementById('code');
+    const msg = document.getElementById('msg');
+    const submit = document.getElementById('submit');
+    const demo = document.getElementById('use-demo');
+
+    function showContent() {
+      lock.style.display = 'none';
+      content.style.display = 'grid';
+      content.setAttribute('aria-hidden','false');
+      content.classList.remove('protect-blur');
+    }
+
+    function deny(reason){
+      msg.textContent = reason || 'Access Denied';
+      input.value = '';
+      input.focus();
+    }
+
+    submit.addEventListener('click', ()=>{
+      const val = input.value || '';
+      if(val === correctCode){
+        showContent();
+      } else {
+        deny('Wrong code. Try again.');
+      }
+    });
+
+    input.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter') submit.click();
+    });
+
+    demo.addEventListener('click', ()=>{
+      deny('Demo mode disabled for production.');
+    });
+
+    // Disable right-click
+    document.addEventListener('contextmenu', e => e.preventDefault());
+
+    // Block common shortcuts and PrintScreen handling
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I','i','J','j','C','c'].includes(e.key)) ){
+        e.preventDefault(); return false;
+      }
+      if(e.ctrlKey && (e.key === 'p' || e.key === 'P' || e.key === 's' || e.key === 'S' || e.key === 'u' || e.key === 'U')){
+        e.preventDefault(); return false;
+      }
+      if(e.key === 'PrintScreen' || e.keyCode === 44){
+        e.preventDefault();
+        try{
+          if(navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText('Screenshot blocked').catch(()=>{});
+          }
+        }catch(err){}
+        content.classList.add('protect-blur');
+        setTimeout(()=>content.classList.remove('protect-blur'), 800);
+      }
+    });
+
+    // Blur/visibility protection
+    function protectOnHidden(){
+      if(content.style.display !== 'none'){
+        content.classList.add('protect-blur');
+      }
+    }
+    function unprotectOnVisible(){
+      content.classList.remove('protect-blur');
+    }
+    document.addEventListener('visibilitychange', ()=>{
+      if(document.hidden) protectOnHidden(); else unprotectOnVisible();
+    });
+    window.addEventListener('blur', protectOnHidden);
+    window.addEventListener('focus', unprotectOnVisible);
+
+    // Prevent dragging images
+    document.querySelectorAll('img.gallery').forEach(img=>{
+      img.draggable = false;
+      img.addEventListener('dragstart', e=> e.preventDefault());
+    });
   </script>
 
 </body>
